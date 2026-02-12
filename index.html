@@ -176,7 +176,7 @@
 
     /* image */
     .img-box{ width:72px; height:72px; border-radius:18px; overflow:hidden; background: rgba(255,255,255,0.70); border:1px solid rgba(255,255,255,0.85); }
-    .img-box img{ width:100%; height:100%; object-fit:contain; display:block; }
+    .img-box img{ width:100%; height:100%; object-fit:cover; display:block; } /* cover로 바꿔서 더 “제품컷” 느낌 */
 
     /* Two-pane layout for review list */
     .review-list{
@@ -304,7 +304,6 @@
           <div class="summary-card">
             <div class="small-label text-red-600 mb-2">1-2) Complaint Top 5</div>
             <div class="mt-2 flex flex-wrap gap-2">
-              <!-- placeholder chips -->
               <span class="badge neg">__KWD_1__</span>
               <span class="badge neg">__KWD_2__</span>
               <span class="badge neg">__KWD_3__</span>
@@ -333,7 +332,6 @@
           </div>
         </div>
 
-        <!-- Extra notes requested by user -->
         <div class="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div class="summary-card">
             <div class="small-label text-blue-600 mb-2"><i class="fa-solid fa-list mr-2"></i>요구사항</div>
@@ -390,7 +388,9 @@
               <tr>
                 <td>
                   <div class="flex items-center gap-3">
-                    <div class="img-box"><img src="__IMG_URL__" alt=""></div>
+                    <div class="img-box">
+                      <img class="auto-img" data-product="__PRODUCT_CODE__" alt="">
+                    </div>
                     <div>
                       <div class="font-black text-slate-900">__PRODUCT_NAME__</div>
                       <div class="muted">code: __PRODUCT_CODE__</div>
@@ -406,7 +406,9 @@
               <tr>
                 <td>
                   <div class="flex items-center gap-3">
-                    <div class="img-box"><img src="__IMG_URL__" alt=""></div>
+                    <div class="img-box">
+                      <img class="auto-img" data-product="__PRODUCT_CODE__" alt="">
+                    </div>
                     <div>
                       <div class="font-black text-slate-900">__PRODUCT_NAME__</div>
                       <div class="muted">code: __PRODUCT_CODE__</div>
@@ -562,7 +564,6 @@
             <div class="text-2xl font-black text-slate-900">실제 고객 목소리 인용</div>
           </div>
 
-          <!-- quick switch: size / low / request -->
           <div class="flex gap-2">
             <button class="chip active" id="ev-size" onclick="switchEvidence('size')">5-1) 사이즈 이슈</button>
             <button class="chip" id="ev-low" onclick="switchEvidence('low')">5-2) 저평점</button>
@@ -571,12 +572,11 @@
         </div>
 
         <div class="review-list">
-          <!-- Review card placeholder -->
           <div class="review-card">
             <div class="flex items-start justify-between gap-3">
               <div class="flex items-center gap-3 min-w-0">
                 <div class="img-box">
-                  <img src="__PRODUCT_IMG__" alt="">
+                  <img class="auto-img" data-product="__PRODUCT_CODE__" alt="">
                 </div>
                 <div class="min-w-0">
                   <div class="font-black text-slate-900 line-clamp-1">__PRODUCT_NAME__</div>
@@ -599,7 +599,6 @@
               __REVIEW_TEXT__
             </div>
 
-            <!-- 100자 이상 텍스트 리뷰 이미지 (요구사항 반영: 자리만) -->
             <div class="mt-4">
               <div class="small-label text-blue-600 mb-2">100+ TEXT IMAGE</div>
               <div class="rounded-2xl border border-white/80 bg-white/60 p-3 flex items-center gap-3">
@@ -614,7 +613,9 @@
           <div class="review-card">
             <div class="flex items-start justify-between gap-3">
               <div class="flex items-center gap-3 min-w-0">
-                <div class="img-box"><img src="__PRODUCT_IMG__" alt=""></div>
+                <div class="img-box">
+                  <img class="auto-img" data-product="__PRODUCT_CODE__" alt="">
+                </div>
                 <div class="min-w-0">
                   <div class="font-black text-slate-900 line-clamp-1">__PRODUCT_NAME__</div>
                   <div class="text-xs font-bold text-slate-500 mt-1">code: __PRODUCT_CODE__ · source: __SOURCE__</div>
@@ -651,7 +652,7 @@
       </div>
     </section>
 
-    <!-- 6) Daily review feed (당일 업로드 순서) + filters -->
+    <!-- 6) Daily review feed -->
     <section class="mb-10">
       <div class="glass-card p-8">
         <div class="flex items-end justify-between gap-6 flex-wrap mb-6">
@@ -662,7 +663,6 @@
           </div>
         </div>
 
-        <!-- Minimal filters -->
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-3 mb-6">
           <select class="input-glass">
             <option>제품 선택 (전체)</option>
@@ -685,13 +685,13 @@
           <input class="input-glass" placeholder="텍스트 검색(옵션) — 기본 OFF" />
         </div>
 
-        <!-- Feed list -->
         <div class="space-y-4">
-          <!-- item -->
           <div class="review-card">
             <div class="flex items-start justify-between gap-3">
               <div class="flex items-center gap-3 min-w-0">
-                <div class="img-box"><img src="__PRODUCT_IMG__" alt=""></div>
+                <div class="img-box">
+                  <img class="auto-img" data-product="__PRODUCT_CODE__" alt="">
+                </div>
                 <div class="min-w-0">
                   <div class="font-black text-slate-900 line-clamp-1">__PRODUCT_NAME__</div>
                   <div class="text-xs font-bold text-slate-500 mt-1">
@@ -726,7 +726,6 @@
             </div>
           </div>
 
-          <!-- empty state placeholder -->
           <div class="hidden review-card text-center" id="noResults">
             <div class="text-lg font-black text-slate-800">검색 결과가 없습니다.</div>
           </div>
@@ -734,7 +733,6 @@
       </div>
     </section>
 
-    <!-- Footer note -->
     <footer class="text-xs font-bold text-slate-500 pb-8">
       * HTML 레이아웃만 제공(데이터 연결/크롤링 로직은 후속 단계에서 연결).<br/>
       * “공식몰/네이버 1탭 합치기”는 Combined 탭으로 반영.
@@ -772,7 +770,6 @@
         document.querySelectorAll('.tab-btn').forEach(b => {
           b.classList.toggle('active', b.getAttribute('data-tab') === tab);
         });
-        // TODO: 데이터 연결 시 tab별 section show/hide
       });
     }
 
@@ -781,7 +778,6 @@
         uiState.chips[key] = !uiState.chips[key];
         const el = document.getElementById('chip-' + key);
         if (el) el.classList.toggle('active', uiState.chips[key]);
-        // TODO: 데이터 연결 시 필터 적용
       });
     }
 
@@ -791,7 +787,6 @@
         document.getElementById('rank-size').classList.toggle('active', mode==='size');
         document.getElementById('rank-low').classList.toggle('active', mode==='low');
         document.getElementById('rank-both').classList.toggle('active', mode==='both');
-        // TODO: 데이터 연결 시 table re-render
       });
     }
 
@@ -801,7 +796,6 @@
         document.getElementById('ev-size').classList.toggle('active', mode==='size');
         document.getElementById('ev-low').classList.toggle('active', mode==='low');
         document.getElementById('ev-req').classList.toggle('active', mode==='req');
-        // TODO: 데이터 연결 시 카드 리스트 re-render
       });
     }
 
@@ -810,6 +804,39 @@
       try { if (window.self !== window.top) document.body.classList.add("embedded"); }
       catch (e) { document.body.classList.add("embedded"); }
     })();
+
+    // ✅ 임시 상품 이미지 자동 주입 (추천 세팅: Unsplash 아웃도어/의류)
+    // - 상품코드(data-product)를 seed로 사용 → 같은 코드면 같은 느낌의 이미지가 나오도록
+    // - Unsplash 막히거나 실패하면 picsum으로 fallback
+    document.addEventListener("DOMContentLoaded", function () {
+      const makeSeed = (s) => {
+        s = (s || "").toString();
+        let h = 0;
+        for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+        return h || Math.floor(Math.random() * 1e9);
+      };
+
+      document.querySelectorAll("img.auto-img").forEach((img) => {
+        const code = img.dataset.product || "seed";
+        const seed = makeSeed(code);
+
+        const unsplashUrl = `https://source.unsplash.com/300x300/?outdoor,jacket,clothing&sig=${seed}`;
+        const picsumUrl = `https://picsum.photos/seed/${seed}/300/300`;
+
+        img.referrerPolicy = "no-referrer";
+        img.loading = "lazy";
+
+        img.onerror = () => {
+          // fallback 1회만
+          if (!img.dataset.fallbackApplied) {
+            img.dataset.fallbackApplied = "1";
+            img.src = picsumUrl;
+          }
+        };
+
+        img.src = unsplashUrl;
+      });
+    });
   </script>
 </body>
 </html>
