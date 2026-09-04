@@ -1,0 +1,59 @@
+name: Build Performance Dashboard
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '10 23 * * *' # 08:10 KST
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y unixodbc unixodbc-dev curl gnupg
+          curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+          curl https://packages.microsoft.com/config/ubuntu/22.04/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list
+          sudo apt-get update
+          sudo ACCEPT_EULA=Y apt-get install -y msodbcsql17
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python packages
+        run: pip install pandas numpy openpyxl pyodbc google-cloud-bigquery db-dtypes
+
+      - name: Configure Google credentials
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+        run: |
+          test -n "$GCP_SA_KEY" || (echo 'Missing secret: GCP_SA_KEY' && exit 1)
+          printf '%s' "$GCP_SA_KEY" > "$RUNNER_TEMP/gcp-key.json"
+          echo "GOOGLE_APPLICATION_CREDENTIALS=$RUNNER_TEMP/gcp-key.json" >> "$GITHUB_ENV"
+
+      - name: Build report
+        env:
+          GCP_PROJECT: columbia-ga4
+          GA4_DATASET: analytics_358593394
+          MSSQL_SERVER: 211.239.167.185
+          MSSQL_DATABASE: columbia_crm
+          MSSQL_USER: crmdata
+          MSSQL_PASSWORD: ${{ secrets.MSSQL_PASSWORD }}
+          OUT_DIR: reports
+        run: python build_performance_dashboard.py
+
+      - name: Commit generated dashboard
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add reports/performance_dashboard.html reports/performance_export.xlsx
+          git diff --cached --quiet && exit 0
+          git commit -m 'Update performance dashboard'
+          git push
